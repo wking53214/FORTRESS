@@ -49,6 +49,27 @@ by content signature (`class Fortress`, `PredictiveStateController`,
   doing anything with this one; they may turn out to be the same
   design at different completeness.
 
+- **`PredictiveIntegrityController.py`** ("FORTRESS v2 — Hardened
+  Release") — from an attachment in
+  [Claude_History](https://github.com/wking53214/Claude_History)'s
+  `730af555-be61-438f-8f6b-25adf965dac8` conversation. A fourth,
+  independent implementation, same design lineage as
+  `PredictiveStateController.py` (recurrent latent-state projection,
+  composite distortion/variance scoring, hysteresis-based governance
+  engagement, freeze-counter lockout, slew-limited blending against a
+  safe fallback) but with real additions not present in that variant:
+  cryptographic provenance verification (`_verify_provenance`, checks a
+  signed source_id/signature pair), Fisher-Information-Matrix-style
+  gradient tracking (`self.G`/`self.g_ema`, cosine-drift between
+  gradient steps), and causal-divergence detection (flags a payload
+  that claims stability in its text while the actual error is high).
+  Different config field names throughout — an independently-written
+  version, not a renamed copy. **The only one of the four variants here
+  that runs cleanly out of the box with zero corruption or missing
+  dependencies** — it came from Claude's own export, not the mangled
+  ARCHIVE JSON pipeline. Verified: `python3 PredictiveIntegrityController.py`
+  runs its built-in 21-step stress harness end to end with real output.
+
 Not moved here: `ARCHIVE/extracted/report_8/UGPISOmegaController.py`
 mentions FORTRESS (`self.fortress = PredictiveStateController(...)`)
 but it's multi-system integration code (also wires in DIT, OBSERVE,
